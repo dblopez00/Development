@@ -99,22 +99,51 @@ namespace Development
 
         private void btnshow_Click(object sender, EventArgs e)
         {
+            //SqlConnection cn = new SqlConnection(
+            //      ConfigurationManager.ConnectionStrings["cs_proyecto"].ConnectionString
+            //  );
+
+            //cn.Open();
+
+            //string tablas = "SELECT * FROM People";
+
+            //SqlCommand comando = new SqlCommand(tablas, cn);
+
+            //SqlDataAdapter adapter = new SqlDataAdapter(comando);
+            //DataSet set = new DataSet();
+            //adapter.Fill(set);
+            //datashow.DataSource = set.Tables[0];
+
+            //cn.Close();
+
             SqlConnection cn = new SqlConnection(
                   ConfigurationManager.ConnectionStrings["cs_proyecto"].ConnectionString
               );
+            SqlDataAdapter adapter;
+            SqlParameter param;
+            SqlCommand comando = new SqlCommand();
+            DataSet ds = new DataSet();
 
             cn.Open();
 
-            string tablas = "SELECT * FROM People";
+            comando.Connection = cn;
+            comando.CommandType = CommandType.StoredProcedure;
+            comando.CommandText = "sp_consulta";
 
-            SqlCommand comando = new SqlCommand(tablas, cn);
+            param = new SqlParameter("@Name", "Debbi");
+            param.Direction = ParameterDirection.Input;
+            param.DbType = DbType.String;
+            comando.Parameters.Add(param);
 
-            SqlDataAdapter adapter = new SqlDataAdapter(comando);
-            DataSet set = new DataSet();
-            adapter.Fill(set);
-            datashow.DataSource = set.Tables[0];
+            adapter = new SqlDataAdapter(comando);
+            adapter.Fill(ds);
 
-            cn.Close();
+            for (int i = 0; i <= ds.Tables[0].Rows.Count; i++)
+            {
+                datashow.DataSource = ds.Tables[0];    
+            }
+            
+
         }
 
         private void btncerrar_Click(object sender, EventArgs e)

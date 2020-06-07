@@ -22,26 +22,34 @@ namespace Development
 
         private void btndelete_Click(object sender, EventArgs e)
         {
-            SqlConnection cn = new SqlConnection(
+            try
+            {
+                SqlConnection cn = new SqlConnection(
                   ConfigurationManager.ConnectionStrings["cs_proyecto"].ConnectionString
               );
 
-            cn.Open();
+                cn.Open();
 
-            if (txid.Text == "")
-            {
-                MessageBox.Show("Esta casilla esta vacia", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (txid.Text == "")
+                {
+                    MessageBox.Show("Esta casilla esta vacia", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    string tablas = "DELETE FROM People WHERE Id_People = " + txid.Text + "";
+
+                    SqlCommand comando = new SqlCommand(tablas, cn);
+                    int show = comando.ExecuteNonQuery();
+
+                    cn.Close();
+                    MessageBox.Show("Se ha eliminado su registro", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Hide();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                string tablas = "DELETE FROM People WHERE Id_People = " + txid.Text + "";
-
-                SqlCommand comando = new SqlCommand(tablas, cn);
-                int show = comando.ExecuteNonQuery();
-
-                cn.Close();
-                MessageBox.Show("Se ha eliminado su registro", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Hide();
+                MessageBox.Show("Lo sentimos algo anda mal en el programa", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                throw;
             }
         }
 

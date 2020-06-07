@@ -22,32 +22,39 @@ namespace Development
 
         private void btnlogin_Click(object sender, EventArgs e)
         {
-            SqlConnection cn = new SqlConnection(
+            try
+            {
+                SqlConnection cn = new SqlConnection(
                    ConfigurationManager.ConnectionStrings["cs_proyecto"].ConnectionString
                );
 
-            cn.Open();
+                cn.Open();
 
-            string tablas = "SELECT * FROM Admin WHERE Username='" + txusername.Text + "' AND Password='" + txpass.Text + "'";
-            SqlCommand comando = new SqlCommand(tablas, cn);
-            SqlDataReader reader = comando.ExecuteReader();
+                string tablas = "SELECT * FROM Admin WHERE Username='" + txusername.Text + "' AND Password='" + txpass.Text + "'";
+                SqlCommand comando = new SqlCommand(tablas, cn);
+                SqlDataReader reader = comando.ExecuteReader();
 
-            if (reader.Read())
-            {
-                MessageBox.Show("Bienvenido a Development SQl", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                People pop = new People();
-                pop.Show();
-                this.Hide();
+                if (reader.Read())
+                {
+                    MessageBox.Show("Bienvenido a Development SQl", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    People pop = new People();
+                    pop.Show();
+                    this.Hide();
+                }
+                else if (txusername.Text == "" && txpass.Text == "")
+                {
+                    MessageBox.Show("Hay casillas vacias", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Lo sentimos, el Username o la Password no aparece en la Base de Datos", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                cn.Close();
             }
-            else if (txusername.Text == "" && txpass.Text == "")
+            catch(Exception ex)
             {
-                MessageBox.Show("Hay casillas vacias", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Hubo un error en el programa" + ex);
             }
-            else
-            {
-                MessageBox.Show("Lo sentimos, el Username o la Password no aparece en la Base de Datos", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            cn.Close();
         }
 
         private void btncerrar_Click(object sender, EventArgs e)
