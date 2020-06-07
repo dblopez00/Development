@@ -130,10 +130,12 @@ namespace Development
             comando.CommandType = CommandType.StoredProcedure;
             comando.CommandText = "sp_consulta";
 
-            param = new SqlParameter("@Name", "Debbi");
-            param.Direction = ParameterDirection.Input;
-            param.DbType = DbType.String;
-            comando.Parameters.Add(param);
+            param = new SqlParameter();
+            comando.Parameters.Add("@Name", SqlDbType.VarChar).Value = "Debbi";
+            comando.Parameters.Add("@PhoneNumber", SqlDbType.VarChar).Value = "123456";
+            //param.Direction = ParameterDirection.Input;
+            //param.DbType = DbType.String;
+            //comando.Parameters.Add(param);
 
             adapter = new SqlDataAdapter(comando);
             adapter.Fill(ds);
