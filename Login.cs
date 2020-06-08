@@ -30,8 +30,17 @@ namespace Development
 
                 cn.Open();
 
-                string tablas = "SELECT * FROM Admin WHERE Username='" + txusername.Text + "' AND Password='" + txpass.Text + "'";
-                SqlCommand comando = new SqlCommand(tablas, cn);
+                //string tablas = "SELECT * FROM Admin WHERE Username='" + txusername.Text + "' AND Password='" + txpass.Text + "'";
+                SqlCommand comando = new SqlCommand();
+                SqlParameter param = new SqlParameter();
+
+                comando.Connection = cn;
+                comando.CommandType = CommandType.StoredProcedure;
+                comando.CommandText = "sp_admin";
+
+                param = new SqlParameter();
+                comando.Parameters.Add("@Username", SqlDbType.VarChar).Value = txusername.Text;
+                comando.Parameters.Add("@Password", SqlDbType.VarChar).Value = txpass.Text;
                 SqlDataReader reader = comando.ExecuteReader();
 
                 if (reader.Read())
