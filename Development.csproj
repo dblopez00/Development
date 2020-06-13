@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clases\ClLogin.cs" />
     <Compile Include="Delete.cs">
       <SubType>Form</SubType>
     </Compile>

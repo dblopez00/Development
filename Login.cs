@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using Development.Clases;
 
 namespace Development
 {
@@ -24,46 +25,60 @@ namespace Development
         {
             try
             {
-                SqlConnection cn = new SqlConnection(
-                   ConfigurationManager.ConnectionStrings["cs_proyecto"].ConnectionString
-               );
-
-                cn.Open();
-
-                //string tablas = "SELECT * FROM Admin WHERE Username='" + txusername.Text + "' AND Password='" + txpass.Text + "'";
-                SqlCommand comando = new SqlCommand();
-                SqlParameter param = new SqlParameter();
-
-                comando.Connection = cn;
-                comando.CommandType = CommandType.StoredProcedure;
-                comando.CommandText = "sp_admin";
-
-                param = new SqlParameter();
-                comando.Parameters.Add("@Username", SqlDbType.VarChar).Value = txusername.Text;
-                comando.Parameters.Add("@Password", SqlDbType.VarChar).Value = txpass.Text;
-                SqlDataReader reader = comando.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    MessageBox.Show("Bienvenido a Development SQl", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    People pop = new People();
-                    pop.Show();
-                    this.Hide();
-                }
-                else if (txusername.Text == "" && txpass.Text == "")
-                {
-                    MessageBox.Show("Hay casillas vacias", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Lo sentimos, el Username o la Password no aparece en la Base de Datos", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                cn.Close();
+                ClLogin cllog = new ClLogin();
+                cllog.username = txusername.Text;
+                cllog.password = txpass.Text;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("Hubo un error en el programa" + ex);
+
+                MessageBox.Show("Error." + ex.Source);
+                throw;
             }
+            
+
+            //try
+            //{
+            //    SqlConnection cn = new SqlConnection(
+            //       ConfigurationManager.ConnectionStrings["cs_proyecto"].ConnectionString
+            //   );
+
+            //    cn.Open();
+
+            //    //string tablas = "SELECT * FROM Admin WHERE Username='" + txusername.Text + "' AND Password='" + txpass.Text + "'";
+            //    SqlCommand comando = new SqlCommand();
+            //    SqlParameter param = new SqlParameter();
+
+            //    comando.Connection = cn;
+            //    comando.CommandType = CommandType.StoredProcedure;
+            //    comando.CommandText = "sp_admin";
+
+            //    param = new SqlParameter();
+            //    comando.Parameters.Add("@Username", SqlDbType.VarChar).Value = txusername.Text;
+            //    comando.Parameters.Add("@Password", SqlDbType.VarChar).Value = txpass.Text;
+            //    SqlDataReader reader = comando.ExecuteReader();
+
+            //    if (reader.Read())
+            //    {
+            //        MessageBox.Show("Bienvenido a Development SQl", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //        People pop = new People();
+            //        pop.Show();
+            //        this.Hide();
+            //    }
+            //    else if (txusername.Text == "" && txpass.Text == "")
+            //    {
+            //        MessageBox.Show("Hay casillas vacias", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("Lo sentimos, el Username o la Password no aparece en la Base de Datos", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    }
+            //    cn.Close();
+            //}
+            //catch(Exception ex)
+            //{
+            //    MessageBox.Show("Hubo un error en el programa" + ex);
+            //}
         }
 
         private void btncerrar_Click(object sender, EventArgs e)
